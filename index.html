@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة حلتهالك | تحميل التطبيق الرسمي</title>
+    <!-- خط تجوال الحديث من جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة إنشاء QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --primary-glow: rgba(108, 92, 231, 0.5);
+            --secondary-color: #a29bfe;
+            --accent-color: #00cec9;
+            --bg-color: #0b0c10;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --text-muted: #a0a5b5;
+        }
+
+        /* حماية حظر تحديد النص والنسخ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and Edge */
+            user-select: none; /* Standard syntax */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* الخلفية المتحركة والتأثيرات */
+        .background-glow {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            top: 10%;
+            right: 15%;
+            filter: blur(80px);
+            opacity: 0.6;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .background-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            bottom: 10%;
+            left: 10%;
+            filter: blur(100px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: float 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* Container الرئيسي */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        /* Header / Logo */
+        .app-header {
+            margin-bottom: 30px;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 30px;
+            object-fit: cover;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+                        0 0 20px var(--primary-glow);
+            border: 2px solid var(--card-border);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .logo-img:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6),
+                        0 0 30px var(--primary-glow);
+        }
+
+        .app-title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 30%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .app-tagline {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Card */
+        .download-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Download Buttons */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary-color), #4834d4);
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px var(--primary-glow);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            max-width: 360px;
+            justify-content: center;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--primary-glow);
+            background: linear-gradient(135deg, #7d5fff, #4834d4);
+        }
+
+        .btn-download i {
+            font-size: 1.5rem;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 206, 201, 0.2);
+        }
+
+        /* QR Code Container Styling */
+        .qr-section {
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-card {
+            position: relative;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            height: 180px;
+        }
+
+        .qr-logo-overlay {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            z-index: 10;
+        }
+
+        .qr-title {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 35px;
+            border-top: 1px solid var(--card-border);
+            padding-top: 25px;
+        }
+
+        .stat-item h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: right;
+            transition: 0.3s;
+        }
+
+        .feature-box:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(108, 92, 231, 0.15);
+            color: var(--secondary-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--card-border);
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .app-title { font-size: 2.2rem; }
+            .download-card { padding: 30px 15px; }
+            .btn-download { font-size: 1.1rem; padding: 15px 30px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <!-- منع فتح القائمة عند الضغط كليك يمين -->
+
+    <!-- عناصر الخلفية المضيئة -->
+    <div class="background-glow"></div>
+    <div class="background-glow-2"></div>
+
+    <div class="container">
+        
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo-wrapper">
+                <img id="appLogo" src="https://raw.githubusercontent.com/elmoftary-vr/Halthalk/main/20260915_165136.jpg" alt="شعار منصة حلتهالك" class="logo-img">
+            </div>
+            <h1 class="app-title">حلتهالك</h1>
+            <p class="app-tagline">منصتك الذكية الأولى لحل جميع المشكلات والأبحاث بكل سهولة وسرعة.</p>
+        </header>
+
+        <!-- Download Card -->
+        <main class="download-card">
+            <span class="version-badge"><i class="fa-solid fa-sparkles"></i> الإصدار الرسمي الأخير v1.0</span>
+            <h2 style="font-weight: 700; margin-bottom: 10px;">احصل على التطبيق الآن</h2>
+            <p style="color: var(--text-muted);">حمل التطبيق مباشرة واستمتع بكافة المميزات الحصرية</p>
+
+            <div class="btn-container">
+                <!-- زر التحميل المباشر (يمكنك تغيير الرابط هنا مستقبلاً وسيتحدث الـ QR آلياً) -->
+                <a id="downloadBtn" href="http://t.me/e_ng_y" class="btn-download" target="_blank">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>تحميل التطبيق الآن</span>
+                </a>
+            </div>
+
+            <!-- QR Code Section -->
+            <div class="qr-section">
+                <div class="qr-card">
+                    <div id="qrcode"></div>
+                    <img id="qrOverlayLogo" class="qr-logo-overlay" src="https://raw.githubusercontent.com/elmoftary-vr/Halthalk/main/20260915_165136.jpg" alt="Logo">
+                </div>
+                <p class="qr-title"><i class="fa-solid fa-qrcode"></i> امسح الرمز للتحميل المباشر عبر الهاتف</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>+50K</h3>
+                    <p>مستخدم نشط</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.9 ★</h3>
+                    <p>تقييم المستخدمين</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100%</h3>
+                    <p>آمن وسريع</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Features Section -->
+        <section class="features-grid">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">سرعة فائقة</h3>
+                <p class="feature-desc">حلول فورية وذكية لكافة مشاكلك وأسئلتك في أسرع وقت ممكن.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="feature-title">آمن ومضمون</h3>
+                <p class="feature-desc">تطبيق مشفر ومحمي تماماً لضمان خصوصية بياناتك ومعلوماتك.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 class="feature-title">واجهة سهلة</h3>
+                <p class="feature-desc">تصميم مريح وعصري يسهل عليك الوصول لكل الخدمات بضغطة زر.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 منصة حلتهالك</p>
+    </footer>
+
+    <!-- Script لإدارة QR التفاعلي وحظر اختصارات النسخ -->
+    <script>
+        // 1. توليد الـ QR Code تلقائياً من رابط الزر
+        document.addEventListener("DOMContentLoaded", function () {
+            const downloadLink = document.getElementById("downloadBtn").getAttribute("href");
+            
+            // إنشاء كود QR
+            new QRCode(document.getElementById("qrcode"), {
+                text: downloadLink,
+                width: 148,
+                height: 148,
+                colorDark : "#0b0c10",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H // نسبة تصحيح خطأ عالية لإتاحة ظهور اللوجو في المنتصف
+            });
+        });
+
+        // 2. حماية إضافية ضد نسخ الكود أو فتح أدوات المطور بالـ Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            // منع Ctrl+C, Ctrl+U, Ctrl+S, F12
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a') || e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
