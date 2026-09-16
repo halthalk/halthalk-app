@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- تم تحديث هذا السطر لمنع التكبير والتأكد من ملاءمة الشاشة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة حلتهالك | تحميل التطبيق الرسمي</title>
     <!-- خط تجوال الحديث من جوجل -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -24,7 +25,13 @@
             --text-muted: #a0a5b5;
         }
 
-        /* حماية حظر تحديد النص والنسخ */
+        /* حماية حظر تحديد النص والنسخ ومنع الخروج عن العرض */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -43,47 +50,49 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            overflow-x: hidden;
             position: relative;
         }
 
         /* الخلفية المتحركة والتأثيرات */
         .background-glow {
             position: absolute;
-            width: 350px;
-            height: 350px;
+            width: 300px;
+            height: 300px;
             background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-            top: 10%;
-            right: 15%;
+            top: 5%;
+            right: -50px;
             filter: blur(80px);
-            opacity: 0.6;
+            opacity: 0.5;
             z-index: -1;
             animation: float 8s ease-in-out infinite alternate;
+            pointer-events: none;
         }
 
         .background-glow-2 {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
             background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-            bottom: 10%;
-            left: 10%;
-            filter: blur(100px);
-            opacity: 0.4;
+            bottom: 5%;
+            left: -50px;
+            filter: blur(90px);
+            opacity: 0.35;
             z-index: -1;
             animation: float 10s ease-in-out infinite alternate-reverse;
+            pointer-events: none;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 50px) scale(1.1); }
+            100% { transform: translate(20px, 30px) scale(1.1); }
         }
 
         /* Container الرئيسي */
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1000px;
-            margin: 40px auto;
+            padding: 0 15px;
+            margin: 30px auto;
             text-align: center;
         }
 
@@ -99,8 +108,8 @@
         }
 
         .logo-img {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 30px;
             object-fit: cover;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
@@ -116,7 +125,7 @@
         }
 
         .app-title {
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 900;
             background: linear-gradient(135deg, #fff 30%, var(--secondary-color) 100%);
             -webkit-background-clip: text;
@@ -126,11 +135,12 @@
         }
 
         .app-tagline {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+            padding: 0 10px;
         }
 
         /* Main Card */
@@ -140,11 +150,12 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--card-border);
             border-radius: 28px;
-            padding: 40px 20px;
+            padding: 35px 20px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
 
         /* Download Buttons */
@@ -155,23 +166,24 @@
             justify-content: center;
             align-items: center;
             margin-top: 25px;
+            width: 100%;
         }
 
         .btn-download {
             background: linear-gradient(135deg, var(--primary-color), #4834d4);
             color: #fff;
             text-decoration: none;
-            padding: 18px 45px;
-            font-size: 1.3rem;
+            padding: 16px 30px;
+            font-size: 1.2rem;
             font-weight: 700;
             border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             box-shadow: 0 10px 25px var(--primary-glow);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
-            max-width: 360px;
+            max-width: 340px;
             justify-content: center;
         }
 
@@ -182,7 +194,7 @@
         }
 
         .btn-download i {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .version-badge {
@@ -190,7 +202,7 @@
             background: rgba(255, 255, 255, 0.08);
             padding: 6px 16px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--accent-color);
             margin-bottom: 15px;
             border: 1px solid rgba(0, 206, 201, 0.2);
@@ -231,7 +243,7 @@
         }
 
         .qr-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             margin-top: 5px;
         }
@@ -239,30 +251,32 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
             margin-top: 35px;
             border-top: 1px solid var(--card-border);
             padding-top: 25px;
+            width: 100%;
         }
 
         .stat-item h3 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #fff;
         }
 
         .stat-item p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
         /* Features Section */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-top: 20px;
+            width: 100%;
         }
 
         .feature-box {
@@ -307,19 +321,23 @@
         /* Footer */
         footer {
             margin-top: auto;
-            padding: 20px;
+            padding: 20px 10px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px solid var(--card-border);
             width: 100%;
         }
 
-        /* Responsive */
+        /* Responsive Optimization */
         @media (max-width: 600px) {
+            .container { padding: 0 12px; margin: 20px auto; }
             .app-title { font-size: 2.2rem; }
-            .download-card { padding: 30px 15px; }
-            .btn-download { font-size: 1.1rem; padding: 15px 30px; }
+            .app-tagline { font-size: 1rem; }
+            .download-card { padding: 25px 15px; border-radius: 22px; }
+            .btn-download { font-size: 1.05rem; padding: 14px 20px; }
+            .logo-img { width: 110px; height: 110px; border-radius: 24px; }
+            .background-glow, .background-glow-2 { width: 200px; height: 200px; }
         }
     </style>
 </head>
@@ -347,8 +365,8 @@
             <p style="color: var(--text-muted);">حمل التطبيق مباشرة واستمتع بكافة المميزات الحصرية</p>
 
             <div class="btn-container">
-                <!-- زر التحميل المباشر (يمكنك تغيير الرابط هنا مستقبلاً وسيتحدث الـ QR آلياً) -->
-                <a id="downloadBtn" href="https://download2298.mediafire.com/2gkcj92vxecgzEEbHSyVoSc7Iea83vIjji3XZgeb6WHxn_rR0RM4p1vAljngTKu4_qJmM6BP0CkiVnuR7Ild2sx9eVlUER8PdHw6xy0z8Vv7_SgdgVk-vpSrfjUuhXW2PLag3pyITTLOVyqHQLHlBYvOLPzvIidyDpLNY7dEEE33oJ8/24xcmit8awz4pvz/halthalk.apk" class="btn-download" target="_blank">
+                <!-- زر التحميل المباشر -->
+                <a id="downloadBtn" href="https://download1076.mediafire.com/avhkg04l974gB3Nwl8g2tbTuX3OCDwPE9zag8CSQ6u5Pmb-loW3fL9zohMMFWJBYoVoLfds3bSHy7QZXadaODhJfFapb-yaGWOz-vaWaLflhCPsPvvOXaYkBrr4WTWS2gp1QanIy0P_5ChFmEUTfaeAwz3vpehyR1lOtUgZSvWYDV9k/24xcmit8awz4pvz/halthalk.apk" class="btn-download" target="_blank">
                     <i class="fa-brands fa-telegram"></i>
                     <span>تحميل التطبيق الآن</span>
                 </a>
