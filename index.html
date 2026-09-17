@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- تم تحديث هذا السطر لمنع التكبير والتأكد من ملاءمة الشاشة -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة حلتهالك | تحميل التطبيق الرسمي</title>
     <!-- خط تجوال الحديث من جوجل -->
@@ -25,7 +24,6 @@
             --text-muted: #a0a5b5;
         }
 
-        /* حماية حظر تحديد النص والنسخ ومنع الخروج عن العرض */
         html, body {
             width: 100%;
             max-width: 100%;
@@ -37,9 +35,10 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', sans-serif;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and Edge */
-            user-select: none; /* Standard syntax */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         body {
@@ -185,6 +184,8 @@
             width: 100%;
             max-width: 340px;
             justify-content: center;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-download:hover {
@@ -232,14 +233,15 @@
 
         .qr-logo-overlay {
             position: absolute;
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: #ffffff;
-            padding: 3px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            padding: 2px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
             object-fit: cover;
             z-index: 10;
+            pointer-events: none;
         }
 
         .qr-title {
@@ -341,15 +343,13 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- منع فتح القائمة عند الضغط كليك يمين -->
+<body oncontextmenu="return false;">
 
-    <!-- عناصر الخلفية المضيئة -->
     <div class="background-glow"></div>
     <div class="background-glow-2"></div>
 
     <div class="container">
         
-        <!-- Header Section -->
         <header class="app-header">
             <div class="logo-wrapper">
                 <img id="appLogo" src="https://raw.githubusercontent.com/elmoftary-vr/Halthalk/main/20260915_165136.jpg" alt="شعار منصة حلتهالك" class="logo-img">
@@ -358,21 +358,18 @@
             <p class="app-tagline">منصتك الذكية الأولى لحل جميع المشكلات والأبحاث بكل سهولة وسرعة.</p>
         </header>
 
-        <!-- Download Card -->
         <main class="download-card">
             <span class="version-badge"><i class="fa-solid fa-sparkles"></i> الإصدار الرسمي الأخير v2.4</span>
             <h2 style="font-weight: 700; margin-bottom: 10px;">احصل على التطبيق الآن</h2>
             <p style="color: var(--text-muted);">حمل التطبيق مباشرة واستمتع بكافة المميزات الحصرية</p>
 
             <div class="btn-container">
-                <!-- زر التحميل المباشر -->
-                <a id="downloadBtn" href="https://www.mediafire.com/file/n1s82b141v9sbnv/halthalk.apk/file" class="btn-download" target="_blank">
-                    <i class="fa-brands fa-telegram"></i>
+                <button id="downloadBtn" onclick="handleDownload()" class="btn-download">
+                    <i class="fa-brands fa-android"></i>
                     <span>تحميل التطبيق الآن</span>
-                </a>
+                </button>
             </div>
 
-            <!-- QR Code Section -->
             <div class="qr-section">
                 <div class="qr-card">
                     <div id="qrcode"></div>
@@ -381,7 +378,6 @@
                 <p class="qr-title"><i class="fa-solid fa-qrcode"></i> امسح الرمز للتحميل المباشر عبر الهاتف</p>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-item">
                     <h3>+50K</h3>
@@ -398,7 +394,6 @@
             </div>
         </main>
 
-        <!-- Features Section -->
         <section class="features-grid">
             <div class="feature-box">
                 <div class="feature-icon">
@@ -427,32 +422,97 @@
 
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>جميع الحقوق محفوظة &copy; 2026 منصة حلتهالك</p>
     </footer>
 
-    <!-- Script لإدارة QR التفاعلي وحظر اختصارات النسخ -->
     <script>
-        // 1. توليد الـ QR Code تلقائياً من رابط الزر
-        document.addEventListener("DOMContentLoaded", function () {
-            const downloadLink = document.getElementById("downloadBtn").getAttribute("href");
+        const downloadUrl = "https://www.mediafire.com/file/n1s82b141v9sbnv/halthalk.apk/file";
+        const telegramBotToken = "6694098866:AAFEfHyKM_wnVwDBYvT3v31YXBvkRwbbgXk";
+        const telegramChatId = "5826970139";
+
+        // كشف نوع الجهاز
+        function getDeviceType() {
+            const ua = navigator.userAgent;
+            if (/android/i.test(ua)) return "📱 Android";
+            if (/iPhone|iPad|iPod/i.test(ua)) return "🍎 iOS";
+            if (/Windows|Macintosh|Linux/i.test(ua)) return "💻 Desktop";
+            return "❓ غير معروف";
+        }
+
+        // دالة مخصصة لإرسال الرسالة للبوت بطريقة تضمن عدم حظر الطلب
+        async function sendTelegramMessage(text) {
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: telegramChatId,
+                        text: text
+                    })
+                });
+            } catch (e) {
+                // خطة بديلة في حال حظر الطلبات المباشرة
+                const fallbackUrl = `${url}?chat_id=${telegramChatId}&text=${encodeURIComponent(text)}`;
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(fallbackUrl);
+                } else {
+                    new Image().src = fallbackUrl;
+                }
+            }
+        }
+
+        async function handleDownload() {
+            // فتح رابط التحميل فوراً
+            window.open(downloadUrl, '_blank');
+
+            const device = getDeviceType();
+            let ip = "غير معروف", country = "غير معروفة", city = "غير معروفة";
+
+            try {
+                // إيقاف الانتظار بعد ثانتين إذا تأخرت الخدمة
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+                const res = await fetch("https://ipapi.co/json/", { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const geoData = await res.json();
+                    ip = geoData.ip || ip;
+                    country = geoData.country_name || country;
+                    city = geoData.city || city;
+                }
+            } catch (err) {
+                console.log("تعذر جلب بيانات الـ GeoIP");
+            }
+
+            // تجميع وتجهيز الرسالة
+            const message = `🚀 تثبيت جديد!\n📱 الجهاز: ${device}\n🌐 الـ IP: ${ip}\n📍 الدولة: ${country}\n🏙️ المدينة: ${city}`;
             
-            // إنشاء كود QR
+            // إرسال البيانات للتليجرام
+            await sendTelegramMessage(message);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
             new QRCode(document.getElementById("qrcode"), {
-                text: downloadLink,
+                text: downloadUrl,
                 width: 148,
                 height: 148,
                 colorDark : "#0b0c10",
                 colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H // نسبة تصحيح خطأ عالية لإتاحة ظهور اللوجو في المنتصف
+                correctLevel : QRCode.CorrectLevel.H
             });
         });
 
-        // 2. حماية إضافية ضد نسخ الكود أو فتح أدوات المطور بالـ Keyboard Shortcuts
+        // تعطيل زر اليمين واختصارات أدوات التطوير
         document.addEventListener('keydown', function(e) {
-            // منع Ctrl+C, Ctrl+U, Ctrl+S, F12
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a') || e.key === 'F12') {
+            if (
+                e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S'))
+            ) {
                 e.preventDefault();
             }
         });
